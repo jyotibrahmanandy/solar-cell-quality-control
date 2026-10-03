@@ -87,10 +87,38 @@ if uploaded_file is not None:
 
     st.subheader("Prediction")
 
-    st.success(
-        f"Detected: {predicted_class.replace('defect_', '').replace('_', ' ').title()}"
-    )
+display_name = (
+    predicted_class
+    .replace("defect_", "")
+    .replace("_", " ")
+    .title()
+)
+
+st.success(
+    f"Detected: {display_name}"
+)
+
+st.write(
+    f"Confidence: **{confidence:.2f}%**"
+)
+
+
+# ==========================================================
+# QUALITY DECISION
+# ==========================================================
+
+if predicted_class == "functional":
+
+    st.success("### ✅ QUALITY STATUS: PASS")
 
     st.write(
-        f"Confidence: **{confidence:.2f}%**"
+        "The solar cell is classified as functional."
+    )
+
+else:
+
+    st.error("### ❌ QUALITY STATUS: FAIL")
+
+    st.write(
+        f"Defect detected: **{display_name}**"
     )
