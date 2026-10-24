@@ -13,6 +13,22 @@ A Streamlit application that classifies an uploaded solar cell electroluminescen
 
 The five classes are `functional`, `defect_halide_segregation`, `defect_layer_delamination`, `defect_phase_degradation`, and `defect_pinhole`.
 
+## Preprocessing & Exploratory Data Analysis (EDA)
+
+The notebook explores the source EL dataset and the project’s curated perovskite/tandem dataset before model training. Its EDA includes:
+
+- Counting supported image files and checking folder contents, file types, and image ID ranges.
+- Reviewing class annotations, matching annotation files to available images, and checking for filename overlap between groups.
+- Displaying sample images and inspecting class counts in the train, validation, and test folders.
+
+The current five-class dataset is organized by split and class under `data/custom/perovskite_tandem/`. TensorFlow loads it from those class folders, resizes images to **224 × 224** pixels, and batches them in groups of **32**. Training data is shuffled with seed `42`; validation and test data are not shuffled.
+
+The model applies preprocessing and augmentation internally: pixel values are rescaled by `1/255`, and training images may receive a random horizontal flip, rotation (up to 5%), or zoom (up to 10%). The Streamlit app resizes uploaded images to 224 × 224 and passes their RGB pixel values to the saved model, which includes the rescaling layer.
+
+For the detailed workflow and reproducibility notes, see [Preprocessing & EDA documentation](docs/preprocessing-and-eda.md).
+
+The model architecture, staged training strategy, and notebook-recorded evaluation are documented in [Feature Extraction & Model Training Analysis](docs/feature-extraction-and-model-training-analysis.md). A Word version is also available as [DOCX](docs/feature-extraction-and-model-training-analysis.docx).
+
 ## Requirements
 
 Python 3.9 or newer is recommended. Install the application dependencies in a virtual environment:
